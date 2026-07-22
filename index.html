@@ -291,8 +291,9 @@
             const data = Object.fromEntries(formData.entries());
 
             try {
-                await fetch('https://hook.us2.make.com/rqtbybu55oh5qdxyqvmzv47ame61jfw9', {
+                await fetch('https://script.google.com/macros/s/AKfycbySLW-7IGsp4_OzWxKj2BEra4hlR1orD6ocmZxKsfamizEF_U7j1u0lgJRT_vTAjkcS/exec', {
                     method: 'POST',
+                    mode: 'no-cors', // Evita bloqueos de seguridad del navegador hacia Google
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(data)
                 });
