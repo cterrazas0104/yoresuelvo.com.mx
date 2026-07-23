@@ -175,6 +175,65 @@
             transform: none;
             box-shadow: none;
         }
+
+        /* Aviso de privacidad y Modal */
+        .privacy-notice {
+            font-size: 12px;
+            color: var(--text-muted);
+            text-align: center;
+            margin: 12px 0;
+        }
+
+        .privacy-notice a {
+            color: var(--primary);
+            text-decoration: underline;
+            cursor: pointer;
+        }
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(4px);
+            z-index: 10000;
+            align-items: center;
+            justify-content: center;
+            padding: 15px;
+            box-sizing: border-box;
+        }
+
+        .modal-content {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 25px 30px;
+            max-width: 550px;
+            width: 100%;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            position: relative;
+            font-size: 14px;
+            line-height: 1.6;
+            color: #444;
+        }
+
+        .modal-content h2 {
+            color: var(--primary);
+            margin-top: 0;
+            font-size: 1.4em;
+        }
+
+        .modal-close-btn {
+            position: absolute;
+            top: 15px; right: 20px;
+            font-size: 24px;
+            border: none;
+            background: none;
+            cursor: pointer;
+            color: #888;
+        }
         
         #pwa-install-msg { 
             display: none; 
@@ -255,9 +314,41 @@
             <div class="form-group">
                 <textarea name="problema" id="problema-text" placeholder="¿En qué podemos ayudarte?" required style="height: 100px; resize: vertical;"></textarea>
             </div>
+            
+            <p class="privacy-notice">
+                Al enviar este formulario aceptas nuestro 
+                <a href="#" id="open-privacy" onclick="togglePrivacyModal(true); return false;">Aviso de Privacidad</a>.
+            </p>
+
             <button type="submit" id="btn-submit">Enviar Solicitud <i class="fas fa-paper-plane" style="margin-left: 8px;"></i></button>
         </form>
     </main>
+
+    <!-- Modal de Aviso de Privacidad -->
+    <div id="privacy-modal" class="modal-overlay">
+        <div class="modal-content">
+            <button class="modal-close-btn" onclick="togglePrivacyModal(false)">&times;</button>
+            <h2>Aviso de Privacidad Simplificado</h2>
+            <p><strong>Yo Resuelvo</strong>, con domicilio en Querétaro, Qro., es responsable del tratamiento y protección de sus datos personales.</p>
+            
+            <p><strong>¿Para qué utilizamos sus datos?</strong><br>
+            Los datos personales que recabamos (Nombre, Teléfono/WhatsApp, Correo Electrónico y detalles del servicio) serán utilizados exclusivamente para:</p>
+            <ul>
+                <li>Atender, cotizar y dar seguimiento a las solicitudes de servicio solicitadas.</li>
+                <li>Ponernos en contacto directo con usted a través de WhatsApp o correo electrónico.</li>
+            </ul>
+
+            <p><strong>Protección y Transferencia de Datos</strong><br>
+            Sus datos son almacenados en infraestructura segura y no serán compartidos, vendidos ni transferidos a terceros bajo ninguna circunstancia sin su consentimiento previo.</p>
+
+            <p><strong>Derechos ARCO</strong><br>
+            Usted tiene derecho a conocer, rectificar, cancelar u oponerse al uso de sus datos personales. Para ejercer cualquiera de estos derechos, puede enviarnos un mensaje directo a nuestro contacto oficial de WhatsApp.</p>
+            
+            <div style="text-align: center; margin-top: 20px;">
+                <button onclick="togglePrivacyModal(false)" style="background: var(--primary); color: white; border: none; padding: 10px 20px; border-radius: 10px; cursor: pointer; font-weight: bold;">Entendido</button>
+            </div>
+        </div>
+    </div>
 
     <script>
         function selectService(name, element) {
@@ -274,6 +365,11 @@
              }
              
             document.getElementById('nombre-input').focus();
+        }
+
+        function togglePrivacyModal(show) {
+            const modal = document.getElementById('privacy-modal');
+            modal.style.display = show ? 'flex' : 'none';
         }
 
         const form = document.getElementById('formulario-ilimitado');
