@@ -16,7 +16,7 @@
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     
-    <!-- Librería html2pdf.js para descarga directa -->
+    <!-- Librería html2pdf.js -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
     <script>
@@ -42,6 +42,12 @@
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: #111827; }
         ::-webkit-scrollbar-thumb { background: #8b5cf6; border-radius: 4px; }
+        
+        /* Clases de control para evitar que los bloques se corten a la mitad en el PDF */
+        .pdf-section {
+            break-inside: avoid;
+            page-break-inside: avoid;
+        }
     </style>
 </head>
 <body class="font-sans text-gray-800 bg-gray-50 antialiased selection:bg-brand-purple selection:text-white">
@@ -55,73 +61,48 @@
     </div>
 
     <!-- Contenedor Principal que se convertirá en PDF -->
-    <div id="propuesta-pdf">
-
-        <!-- Navbar -->
-        <nav class="fixed w-full z-50 transition-all duration-300 bg-brand-dark/95 backdrop-blur-md border-b border-white/10">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="flex justify-between items-center h-20">
-                    <div class="flex-shrink-0 flex items-center gap-3">
-                        <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-brand-purple to-indigo-600 flex items-center justify-center shadow-lg">
-                            <i class="fa-solid fa-cloud text-white text-xl"></i>
-                        </div>
-                        <span class="text-white font-bold text-xl tracking-tight">CESBA <span class="text-brand-purpleLight">Querétaro</span></span>
-                    </div>
-                    <div class="hidden md:flex space-x-8">
-                        <a href="#presentacion" class="text-gray-300 hover:text-white transition-colors text-sm font-medium">Presentación</a>
-                        <a href="#objetivos" class="text-gray-300 hover:text-white transition-colors text-sm font-medium">Objetivos</a>
-                        <a href="#modulos" class="text-gray-300 hover:text-white transition-colors text-sm font-medium">Temario</a>
-                        <a href="#instructor" class="text-gray-300 hover:text-white transition-colors text-sm font-medium">Instructor</a>
-                    </div>
-                    <div>
-                        <button onclick="descargarPDF()" class="inline-flex items-center justify-center px-5 py-2.5 border border-white/20 rounded-full text-sm font-medium text-white bg-white/10 hover:bg-white/20 transition-all duration-300">
-                            <i class="fa-solid fa-download mr-2"></i> PDF
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </nav>
+    <div id="propuesta-pdf" class="bg-white">
 
         <!-- Hero Section -->
-        <section class="relative pt-32 pb-20 lg:pt-48 lg:pb-32 bg-brand-dark">
-            <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-                <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-sm mb-8 text-brand-purpleLight text-sm font-medium">
+        <section class="relative pt-20 pb-16 bg-brand-dark text-center pdf-section">
+            <div class="max-w-4xl mx-auto px-4">
+                <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 mb-6 text-brand-purpleLight text-xs font-medium">
                     <i class="fa-solid fa-graduation-cap"></i> Propuesta de Diplomado Institucional
                 </div>
                 
-                <h1 class="text-4xl md:text-5xl lg:text-7xl font-extrabold text-white tracking-tight mb-6 leading-tight">
+                <h1 class="text-3xl md:text-5xl font-extrabold text-white tracking-tight mb-4 leading-tight">
                     Arquitectura Serverless, <br>
                     <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-purpleLight to-brand-purple">Integración de APIs e IA</span>
                 </h1>
                 
-                <p class="mt-4 max-w-3xl mx-auto text-xl text-gray-300 font-light mb-10">
+                <p class="max-w-2xl mx-auto text-base text-gray-300 font-light">
                     Desarrollo Web de Alto Impacto sin Costos de Infraestructura. Domina las tecnologías en la nube de última generación.
                 </p>
             </div>
         </section>
 
         <!-- Presentación & ¿Qué es? -->
-        <section id="presentacion" class="py-20 bg-gray-50">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-                    <div class="bg-white p-8 md:p-10 rounded-2xl shadow-xl border border-gray-100">
-                        <h2 class="text-3xl font-bold text-brand-dark mb-6">Presentación</h2>
-                        <p class="text-gray-600 leading-relaxed mb-6">
+        <section class="py-12 bg-gray-50 pdf-section">
+            <div class="max-w-6xl mx-auto px-4">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+                        <h2 class="text-2xl font-bold text-brand-dark mb-4">Presentación</h2>
+                        <p class="text-gray-600 text-sm leading-relaxed mb-4">
                             El <strong>Centro de Estudios Superiores del Bajío (CESBA Campus Querétaro)</strong> invita a estudiantes y profesionistas a participar en este diplomado de vanguardia.
                         </p>
-                        <p class="text-gray-600 leading-relaxed">
-                            Actualmente, las organizaciones demandan aplicaciones hiperconectadas y capaces de operar con disponibilidad 24/7 <span class="font-semibold text-brand-navy">sin la necesidad de mantener costosos servidores físicos</span>.
+                        <p class="text-gray-600 text-sm leading-relaxed">
+                            Las organizaciones demandan aplicaciones hiperconectadas y capaces de operar 24/7 <span class="font-semibold text-brand-navy">sin la necesidad de mantener costosos servidores físicos</span>.
                         </p>
                     </div>
 
-                    <div class="space-y-6">
-                        <h2 class="text-3xl md:text-4xl font-bold text-brand-dark leading-tight">
+                    <div class="space-y-4">
+                        <h2 class="text-2xl font-bold text-brand-dark leading-tight">
                             ¿Qué es la Arquitectura Serverless e IA?
                         </h2>
-                        <p class="text-gray-600 leading-relaxed text-lg">
+                        <p class="text-gray-600 text-sm leading-relaxed">
                             Es un paradigma donde los programadores construyen aplicaciones reutilizando servicios administrados en la nube con un enfoque seguro y escalable.
                         </p>
-                        <div class="p-6 bg-brand-navy rounded-xl text-white shadow-lg">
+                        <div class="p-4 bg-brand-navy rounded-xl text-white shadow-md text-sm">
                             <p class="text-gray-200">
                                 Permite desplegar plataformas protegidas con SSL a <strong>costo cero de servidor</strong>, acelerando el tiempo de salida al mercado.
                             </p>
@@ -132,11 +113,11 @@
         </section>
 
         <!-- Objetivos -->
-        <section id="objetivos" class="py-24 bg-brand-dark text-white">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="bg-gradient-to-r from-brand-navy to-indigo-900 rounded-3xl p-8 md:p-12 shadow-2xl border border-white/10 mb-16 text-center max-w-4xl mx-auto">
-                    <h2 class="text-3xl font-bold mb-6">Objetivo General</h2>
-                    <p class="text-lg md:text-xl text-gray-200 leading-relaxed font-light">
+        <section class="py-12 bg-brand-dark text-white pdf-section">
+            <div class="max-w-6xl mx-auto px-4">
+                <div class="bg-gradient-to-r from-brand-navy to-indigo-900 rounded-2xl p-8 shadow-xl border border-white/10 text-center max-w-3xl mx-auto">
+                    <h2 class="text-2xl font-bold mb-4">Objetivo General</h2>
+                    <p class="text-sm md:text-base text-gray-200 leading-relaxed font-light">
                         Proporcionar competencias y herramientas prácticas para diseñar, construir y desplegar <strong class="text-white">aplicaciones web Full-Stack Serverless</strong> integrando Bases de Datos en la nube, APIs de Inteligencia Artificial (Gemini API) y Cloudflare.
                     </p>
                 </div>
@@ -144,59 +125,59 @@
         </section>
 
         <!-- Contenido Curricular (Módulos) -->
-        <section id="modulos" class="py-24 bg-white">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="text-center mb-16">
-                    <h2 class="text-3xl md:text-5xl font-extrabold text-brand-dark mb-4">Contenido Curricular</h2>
-                    <p class="text-gray-600 text-lg">Estructurado en 6 módulos intensivos orientados a la práctica real.</p>
+        <section class="py-12 bg-white pdf-section">
+            <div class="max-w-6xl mx-auto px-4">
+                <div class="text-center mb-10">
+                    <h2 class="text-2xl md:text-3xl font-extrabold text-brand-dark mb-2">Contenido Curricular</h2>
+                    <p class="text-gray-600 text-sm">Estructurado en 6 módulos intensivos orientados a la práctica real.</p>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    <div class="bg-gray-50 rounded-2xl p-6 border border-gray-100">
-                        <div class="text-brand-purple font-bold text-3xl mb-2">01</div>
-                        <h3 class="font-bold text-brand-dark mb-2">Control de Versiones y CI/CD</h3>
-                        <p class="text-gray-600 text-sm">Git, GitHub y despliegues continuos con Cloudflare Pages.</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="bg-gray-50 rounded-xl p-5 border border-gray-100 pdf-section">
+                        <div class="text-brand-purple font-bold text-2xl mb-1">01</div>
+                        <h3 class="font-bold text-brand-dark text-sm mb-1">Control de Versiones y CI/CD</h3>
+                        <p class="text-gray-600 text-xs">Git, GitHub y despliegues continuos con Cloudflare Pages.</p>
                     </div>
-                    <div class="bg-gray-50 rounded-2xl p-6 border border-gray-100">
-                        <div class="text-brand-purple font-bold text-3xl mb-2">02</div>
-                        <h3 class="font-bold text-brand-dark mb-2">Infraestructura Web y DNS</h3>
-                        <p class="text-gray-600 text-sm">Gestión de dominios, SSL/TLS, reglas WAF y ciberseguridad.</p>
+                    <div class="bg-gray-50 rounded-xl p-5 border border-gray-100 pdf-section">
+                        <div class="text-brand-purple font-bold text-2xl mb-1">02</div>
+                        <h3 class="font-bold text-brand-dark text-sm mb-1">Infraestructura Web y DNS</h3>
+                        <p class="text-gray-600 text-xs">Gestión de dominios, SSL/TLS, reglas WAF y ciberseguridad.</p>
                     </div>
-                    <div class="bg-gray-50 rounded-2xl p-6 border border-gray-100">
-                        <div class="text-brand-purple font-bold text-3xl mb-2">03</div>
-                        <h3 class="font-bold text-brand-dark mb-2">Backend Serverless y APIs REST</h3>
-                        <p class="text-gray-600 text-sm">Google Apps Script y Google Sheets como motor relacional.</p>
+                    <div class="bg-gray-50 rounded-xl p-5 border border-gray-100 pdf-section">
+                        <div class="text-brand-purple font-bold text-2xl mb-1">03</div>
+                        <h3 class="font-bold text-brand-dark text-sm mb-1">Backend Serverless y APIs REST</h3>
+                        <p class="text-gray-600 text-xs">Google Apps Script y Google Sheets como motor relacional.</p>
                     </div>
-                    <div class="bg-gray-50 rounded-2xl p-6 border border-gray-100">
-                        <div class="text-brand-purple font-bold text-3xl mb-2">04</div>
-                        <h3 class="font-bold text-brand-dark mb-2">Webhooks y Automatización</h3>
-                        <p class="text-gray-600 text-sm">Arquitectura orientada a eventos y notificaciones por WhatsApp.</p>
+                    <div class="bg-gray-50 rounded-xl p-5 border border-gray-100 pdf-section">
+                        <div class="text-brand-purple font-bold text-2xl mb-1">04</div>
+                        <h3 class="font-bold text-brand-dark text-sm mb-1">Webhooks y Automatización</h3>
+                        <p class="text-gray-600 text-xs">Arquitectura orientada a eventos y notificaciones por WhatsApp.</p>
                     </div>
-                    <div class="bg-gray-50 rounded-2xl p-6 border border-gray-100">
-                        <div class="text-brand-purple font-bold text-3xl mb-2">05</div>
-                        <h3 class="font-bold text-brand-dark mb-2">Inteligencia Artificial</h3>
-                        <p class="text-gray-600 text-sm">Consumo asíncrono de Gemini API y Prompt Engineering.</p>
+                    <div class="bg-gray-50 rounded-xl p-5 border border-gray-100 pdf-section">
+                        <div class="text-brand-purple font-bold text-2xl mb-1">05</div>
+                        <h3 class="font-bold text-brand-dark text-sm mb-1">Inteligencia Artificial</h3>
+                        <p class="text-gray-600 text-xs">Consumo asíncrono de Gemini API y Prompt Engineering.</p>
                     </div>
-                    <div class="bg-gray-50 rounded-2xl p-6 border border-gray-100">
-                        <div class="text-brand-purple font-bold text-3xl mb-2">06</div>
-                        <h3 class="font-bold text-brand-dark mb-2">Proyecto Integrador</h3>
-                        <p class="text-gray-600 text-sm">Ensamblado final de la aplicación y publicación con dominio propio.</p>
+                    <div class="bg-gray-50 rounded-xl p-5 border border-gray-100 pdf-section">
+                        <div class="text-brand-purple font-bold text-2xl mb-1">06</div>
+                        <h3 class="font-bold text-brand-dark text-sm mb-1">Proyecto Integrador</h3>
+                        <p class="text-gray-600 text-xs">Ensamblado final de la aplicación y publicación con dominio propio.</p>
                     </div>
                 </div>
             </div>
         </section>
 
         <!-- Instructor -->
-        <section id="instructor" class="py-20 bg-gray-50 border-t border-gray-200">
+        <section class="py-10 bg-gray-50 border-t border-gray-200 pdf-section">
             <div class="max-w-4xl mx-auto px-4">
-                <div class="bg-white rounded-3xl p-8 md:p-12 shadow-lg border border-gray-100 flex flex-col md:flex-row gap-8 items-center">
-                    <div class="w-32 h-32 rounded-full border-4 border-brand-purple overflow-hidden bg-brand-navy flex-shrink-0">
+                <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 flex flex-col md:flex-row gap-6 items-center">
+                    <div class="w-24 h-24 rounded-full border-2 border-brand-purple overflow-hidden bg-brand-navy flex-shrink-0">
                         <img src="https://placehold.co/400x400/1e3a8a/ffffff?text=Mtro.+C%C3%A9sar" alt="Instructor" class="w-full h-full object-cover">
                     </div>
                     <div>
                         <div class="text-xs font-bold text-brand-purple tracking-widest uppercase mb-1">Instructor Titular</div>
-                        <h3 class="text-2xl font-bold text-brand-dark mb-2">Mtro. César Gabriel Terrazas Zarazúa</h3>
-                        <p class="text-gray-600 text-sm leading-relaxed">
+                        <h3 class="text-xl font-bold text-brand-dark mb-2">Mtro. César Gabriel Terrazas Zarazúa</h3>
+                        <p class="text-gray-600 text-xs leading-relaxed">
                             Maestro en Educación por la UEM y Licenciado en Sistemas Computacionales por el CESBA. Con más de 11 años de trayectoria docente y experiencia directiva en TIC en el sector público estatal.
                         </p>
                     </div>
@@ -205,17 +186,17 @@
         </section>
 
         <!-- Footer / Datos -->
-        <footer class="bg-gray-900 text-white py-12 text-center">
+        <footer class="bg-gray-900 text-white py-8 text-center pdf-section">
             <div class="max-w-4xl mx-auto px-4">
-                <h3 class="text-xl font-bold mb-2">CESBA Campus Querétaro</h3>
-                <p class="text-gray-400 text-sm">Duración: 120 Horas | Modalidad: Presencial / Virtual</p>
-                <p class="text-gray-500 text-xs mt-6">&copy; 2026 Centro de Estudios Superiores del Bajío.</p>
+                <h3 class="text-lg font-bold mb-1">CESBA Campus Querétaro</h3>
+                <p class="text-gray-400 text-xs">Duración: 120 Horas | Modalidad: Presencial / Virtual</p>
+                <p class="text-gray-500 text-[10px] mt-4">&copy; 2026 Centro de Estudios Superiores del Bajío.</p>
             </div>
         </footer>
 
     </div><!-- Fin del contenedor PDF -->
 
-    <!-- Script para generar y descargar el PDF de forma automática -->
+    <!-- Script optimizado para evitar cortes -->
     <script>
         function descargarPDF() {
             const btn = document.getElementById('btn-descargar');
@@ -223,18 +204,16 @@
             btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Generando PDF...';
             btn.style.pointerEvents = 'none';
 
-            // Elemento que se va a convertir en documento PDF
             const elemento = document.getElementById('propuesta-pdf');
 
             const opciones = {
-                margin:       [10, 10, 10, 10], // Márgenes limpios en mm
+                margin:       [5, 5, 5, 5], 
                 filename:     'Propuesta_Diplomado_CESBA_CesarTerrazas.pdf',
                 image:        { type: 'jpeg', quality: 0.98 },
-                html2canvas:  { scale: 2, useCORS: true, letterRendering: true },
+                html2canvas:  { scale: 2, useCORS: true, letterRendering: true, scrollY: 0 },
                 jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
             };
 
-            // Ejecuta la conversión y descarga directa
             html2pdf().from(elemento).set(opciones).save().then(() => {
                 btn.innerHTML = originalText;
                 btn.style.pointerEvents = 'auto';
