@@ -16,95 +16,168 @@
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     
-    <!-- Librería html2pdf.js -->
+    <!-- Librería html2pdf.js para descarga directa -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
     <script>
         tailwind.config = {
             theme: {
                 extend: {
-                    fontFamily: { sans: ['Inter', 'sans-serif'] },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
                     colors: {
                         brand: {
                             navy: '#1e3a8a',
                             dark: '#111827',
                             purple: '#8b5cf6',
                             purpleLight: '#ad8ad4',
-                            rust: '#c2410c',
+                            rust: '#c2410c', // Dark orange/rust for CTAs
                             rustHover: '#9a3412',
                         }
+                    },
+                    backgroundImage: {
+                        'hero-pattern': "url('data:image/svg+xml,%3Csvg width=\\'60\\' height=\\'60\\' viewBox=\\'0 0 60 60\\' xmlns=\\'http://www.w3.org/2000/svg\\'%3E%3Cg fill=\\'none\\' fill-rule=\\'evenodd\\'%3E%3Cg fill=\\'%234f46e5\\' fill-opacity=\\'0.05\\'%3E%3Cpath d=\\'M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z\\'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')",
                     }
                 }
             }
         }
     </script>
     <style>
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: #111827; }
-        ::-webkit-scrollbar-thumb { background: #8b5cf6; border-radius: 4px; }
-        
-        /* Clases de control para evitar que los bloques se corten a la mitad en el PDF */
-        .pdf-section {
-            break-inside: avoid;
-            page-break-inside: avoid;
+        /* Custom scrollbar for a premium feel */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #111827;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #8b5cf6;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #ad8ad4;
         }
     </style>
 </head>
 <body class="font-sans text-gray-800 bg-gray-50 antialiased selection:bg-brand-purple selection:text-white">
 
-    <!-- Botón Flotante de Descarga Directa PDF -->
-    <div class="fixed bottom-6 right-6 z-50 no-print">
+    <!-- Botón Flotante para Descargar PDF (Se oculta al generar el documento) -->
+    <div class="fixed bottom-6 right-6 z-50">
         <button onclick="descargarPDF()" id="btn-descargar" class="flex items-center gap-2 bg-brand-rust hover:bg-brand-rustHover text-white font-bold px-6 py-4 rounded-full shadow-2xl transition-all duration-300 transform hover:scale-105 border border-white/20">
             <i class="fa-solid fa-file-arrow-down text-xl"></i>
             <span>Descargar Propuesta PDF</span>
         </button>
     </div>
 
-    <!-- Contenedor Principal que se convertirá en PDF -->
-    <div id="propuesta-pdf" class="bg-white">
+    <!-- Contenedor Principal envuelto para generar el PDF con tu diseño exacto -->
+    <div id="propuesta-pdf" class="bg-gray-50">
+
+        <!-- Navbar -->
+        <nav class="fixed w-full z-50 transition-all duration-300 bg-brand-dark/90 backdrop-blur-md border-b border-white/10">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex justify-between items-center h-20">
+                    <div class="flex-shrink-0 flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-brand-purple to-indigo-600 flex items-center justify-center shadow-lg">
+                            <i class="fa-solid fa-cloud text-white text-xl"></i>
+                        </div>
+                        <span class="text-white font-bold text-xl tracking-tight hidden sm:block">CESBA <span class="text-brand-purpleLight">Querétaro</span></span>
+                    </div>
+                    <div class="hidden md:flex space-x-8">
+                        <a href="#presentacion" class="text-gray-300 hover:text-white transition-colors text-sm font-medium">Presentación</a>
+                        <a href="#objetivos" class="text-gray-300 hover:text-white transition-colors text-sm font-medium">Objetivos</a>
+                        <a href="#modulos" class="text-gray-300 hover:text-white transition-colors text-sm font-medium">Temario</a>
+                        <a href="#instructor" class="text-gray-300 hover:text-white transition-colors text-sm font-medium">Instructor</a>
+                    </div>
+                    <div>
+                        <a href="#inscripcion" class="inline-flex items-center justify-center px-6 py-2.5 border border-transparent rounded-full shadow-sm text-sm font-medium text-white bg-brand-rust hover:bg-brand-rustHover transition-all duration-300 shadow-brand-rust/30 hover:shadow-brand-rust/50 transform hover:-translate-y-0.5">
+                            Inscribirse Ahora
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </nav>
 
         <!-- Hero Section -->
-        <section class="relative pt-20 pb-16 bg-brand-dark text-center pdf-section">
-            <div class="max-w-4xl mx-auto px-4">
-                <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 mb-6 text-brand-purpleLight text-xs font-medium">
-                    <i class="fa-solid fa-graduation-cap"></i> Propuesta de Diplomado Institucional
+        <section class="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden bg-brand-dark bg-hero-pattern">
+            <!-- Gradients for depth -->
+            <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full max-w-7xl">
+                <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-brand-purple rounded-full mix-blend-screen filter blur-[128px] opacity-40 animate-pulse"></div>
+                <div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-brand-navy rounded-full mix-blend-screen filter blur-[128px] opacity-60"></div>
+            </div>
+
+            <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-sm mb-8 text-brand-purpleLight text-sm font-medium">
+                    <i class="fa-solid fa-graduation-cap"></i>
+                    Propuesta de Diplomado Institucional
                 </div>
                 
-                <h1 class="text-3xl md:text-5xl font-extrabold text-white tracking-tight mb-4 leading-tight">
-                    Arquitectura Serverless, <br>
+                <h1 class="text-4xl md:text-5xl lg:text-7xl font-extrabold text-white tracking-tight mb-6 leading-tight">
+                    Arquitectura Serverless, <br class="hidden md:block">
                     <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-purpleLight to-brand-purple">Integración de APIs e IA</span>
                 </h1>
                 
-                <p class="max-w-2xl mx-auto text-base text-gray-300 font-light">
-                    Desarrollo Web de Alto Impacto sin Costos de Infraestructura. Domina las tecnologías en la nube de última generación.
+                <p class="mt-4 max-w-3xl mx-auto text-xl text-gray-300 font-light mb-10">
+                    Desarrollo Web de Alto Impacto sin Costos de Infraestructura. Domina las tecnologías en la nube de última generación que están transformando la industria del software global.
                 </p>
+                
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <a href="#modulos" class="inline-flex items-center justify-center px-8 py-4 text-base font-bold text-white bg-brand-rust hover:bg-brand-rustHover rounded-full transition-all duration-300 shadow-[0_0_20px_rgba(194,65,12,0.4)] hover:shadow-[0_0_30px_rgba(194,65,12,0.6)] transform hover:-translate-y-1">
+                        Ver Temario Completo
+                        <i class="fa-solid fa-arrow-down ml-2"></i>
+                    </a>
+                    <a href="#presentacion" class="inline-flex items-center justify-center px-8 py-4 text-base font-medium text-white bg-white/10 hover:bg-white/20 border border-white/10 rounded-full backdrop-blur-sm transition-all duration-300">
+                        Conocer Más
+                    </a>
+                </div>
             </div>
+            
+            <!-- Bottom overlay gradient to blend with next section -->
+            <div class="absolute bottom-0 w-full h-24 bg-gradient-to-t from-gray-50 to-transparent"></div>
         </section>
 
         <!-- Presentación & ¿Qué es? -->
-        <section class="py-12 bg-gray-50 pdf-section">
-            <div class="max-w-6xl mx-auto px-4">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-                        <h2 class="text-2xl font-bold text-brand-dark mb-4">Presentación</h2>
-                        <p class="text-gray-600 text-sm leading-relaxed mb-4">
-                            El <strong>Centro de Estudios Superiores del Bajío (CESBA Campus Querétaro)</strong> invita a estudiantes y profesionistas a participar en este diplomado de vanguardia.
+        <section id="presentacion" class="py-20 bg-gray-50 relative">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                    
+                    <!-- Presentación -->
+                    <div class="bg-white p-8 md:p-10 rounded-2xl shadow-xl shadow-brand-navy/5 border border-gray-100 relative">
+                        <div class="absolute -top-6 -left-6 w-12 h-12 bg-gradient-to-br from-brand-purple to-brand-navy rounded-xl flex items-center justify-center text-white shadow-lg shadow-brand-purple/30 transform rotate-12">
+                            <i class="fa-solid fa-building-columns text-xl -rotate-12"></i>
+                        </div>
+                        <h2 class="text-3xl font-bold text-brand-dark mb-6 mt-2">Presentación</h2>
+                        <p class="text-gray-600 leading-relaxed mb-6">
+                            El <strong>Centro de Estudios Superiores del Bajío (CESBA Campus Querétaro)</strong> invita a estudiantes, egresados y profesionistas a participar en este diplomado de vanguardia.
                         </p>
-                        <p class="text-gray-600 text-sm leading-relaxed">
-                            Las organizaciones demandan aplicaciones hiperconectadas y capaces de operar 24/7 <span class="font-semibold text-brand-navy">sin la necesidad de mantener costosos servidores físicos</span>.
+                        <p class="text-gray-600 leading-relaxed">
+                            Actualmente, las organizaciones demandan aplicaciones hiperconectadas, capaces de procesar datos en tiempo real, integrarse con modelos de Inteligencia Artificial Generativa y operar con disponibilidad 24/7 <span class="font-semibold text-brand-navy">sin la necesidad de mantener costosos servidores físicos</span> o infraestructura compleja.
                         </p>
                     </div>
 
-                    <div class="space-y-4">
-                        <h2 class="text-2xl font-bold text-brand-dark leading-tight">
+                    <!-- ¿Qué es? -->
+                    <div class="space-y-6">
+                        <div class="inline-flex items-center gap-2 text-brand-purple font-semibold uppercase tracking-wider text-sm">
+                            <i class="fa-solid fa-circle-question"></i>
+                            Concepto Clave
+                        </div>
+                        <h2 class="text-3xl md:text-4xl font-bold text-brand-dark leading-tight">
                             ¿Qué es la Arquitectura Serverless e IA?
                         </h2>
-                        <p class="text-gray-600 text-sm leading-relaxed">
-                            Es un paradigma donde los programadores construyen aplicaciones reutilizando servicios administrados en la nube con un enfoque seguro y escalable.
+                        <p class="text-gray-600 leading-relaxed text-lg">
+                            Es un paradigma de desarrollo donde los programadores construyen aplicaciones completas reutilizando servicios administrados en la nube.
                         </p>
-                        <div class="p-4 bg-brand-navy rounded-xl text-white shadow-md text-sm">
+                        
+                        <div class="flex flex-wrap gap-3 mt-6">
+                            <span class="px-4 py-2 bg-gray-100 rounded-full text-sm font-medium text-gray-700 flex items-center gap-2"><i class="fa-brands fa-github"></i> GitHub</span>
+                            <span class="px-4 py-2 bg-gray-100 rounded-full text-sm font-medium text-gray-700 flex items-center gap-2"><i class="fa-solid fa-cloud-bolt"></i> Cloudflare</span>
+                            <span class="px-4 py-2 bg-gray-100 rounded-full text-sm font-medium text-gray-700 flex items-center gap-2"><i class="fa-brands fa-google"></i> Apps Script</span>
+                            <span class="px-4 py-2 bg-gray-100 rounded-full text-sm font-medium text-gray-700 flex items-center gap-2"><i class="fa-solid fa-robot"></i> Gemini API</span>
+                        </div>
+
+                        <div class="mt-8 p-6 bg-brand-navy rounded-xl text-white shadow-lg border-l-4 border-brand-purpleLight">
                             <p class="text-gray-200">
-                                Permite desplegar plataformas protegidas con SSL a <strong>costo cero de servidor</strong>, acelerando el tiempo de salida al mercado.
+                                Esto permite desplegar plataformas escalables, seguras y protegidas con SSL en cuestión de minutos y a <strong>costo cero de servidor</strong>, acelerando drásticamente el tiempo de salida al mercado (Time-to-Market).
                             </p>
                         </div>
                     </div>
@@ -112,91 +185,453 @@
             </div>
         </section>
 
-        <!-- Objetivos -->
-        <section class="py-12 bg-brand-dark text-white pdf-section">
-            <div class="max-w-6xl mx-auto px-4">
-                <div class="bg-gradient-to-r from-brand-navy to-indigo-900 rounded-2xl p-8 shadow-xl border border-white/10 text-center max-w-3xl mx-auto">
-                    <h2 class="text-2xl font-bold mb-4">Objetivo General</h2>
-                    <p class="text-sm md:text-base text-gray-200 leading-relaxed font-light">
-                        Proporcionar competencias y herramientas prácticas para diseñar, construir y desplegar <strong class="text-white">aplicaciones web Full-Stack Serverless</strong> integrando Bases de Datos en la nube, APIs de Inteligencia Artificial (Gemini API) y Cloudflare.
-                    </p>
-                </div>
-            </div>
-        </section>
-
-        <!-- Contenido Curricular (Módulos) -->
-        <section class="py-12 bg-white pdf-section">
-            <div class="max-w-6xl mx-auto px-4">
-                <div class="text-center mb-10">
-                    <h2 class="text-2xl md:text-3xl font-extrabold text-brand-dark mb-2">Contenido Curricular</h2>
-                    <p class="text-gray-600 text-sm">Estructurado en 6 módulos intensivos orientados a la práctica real.</p>
+        <!-- Público Objetivo -->
+        <section class="py-20 bg-white">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center max-w-3xl mx-auto mb-16">
+                    <h2 class="text-3xl md:text-4xl font-bold text-brand-dark mb-4">¿A quién va dirigido este Diplomado?</h2>
+                    <div class="w-24 h-1 bg-brand-purple mx-auto rounded-full"></div>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    <div class="bg-gray-50 rounded-xl p-5 border border-gray-100 pdf-section">
-                        <div class="text-brand-purple font-bold text-2xl mb-1">01</div>
-                        <h3 class="font-bold text-brand-dark text-sm mb-1">Control de Versiones y CI/CD</h3>
-                        <p class="text-gray-600 text-xs">Git, GitHub y despliegues continuos con Cloudflare Pages.</p>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <!-- Card 1 -->
+                    <div class="group bg-gray-50 rounded-2xl p-8 hover:bg-brand-navy hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 text-center border border-gray-100">
+                        <div class="w-16 h-16 mx-auto bg-white rounded-full flex items-center justify-center text-brand-purple text-2xl shadow-sm mb-6 group-hover:bg-brand-purpleLight group-hover:text-white transition-colors">
+                            <i class="fa-solid fa-user-graduate"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-brand-dark mb-4 group-hover:text-white">Estudiantes y Egresados</h3>
+                        <p class="text-gray-600 group-hover:text-gray-300 text-sm leading-relaxed">
+                            De la Licenciatura en Sistemas Computacionales e ingenierías afines interesados en fortalecer su portafolio profesional para procesos de titulación o inserción laboral.
+                        </p>
                     </div>
-                    <div class="bg-gray-50 rounded-xl p-5 border border-gray-100 pdf-section">
-                        <div class="text-brand-purple font-bold text-2xl mb-1">02</div>
-                        <h3 class="font-bold text-brand-dark text-sm mb-1">Infraestructura Web y DNS</h3>
-                        <p class="text-gray-600 text-xs">Gestión de dominios, SSL/TLS, reglas WAF y ciberseguridad.</p>
-                    </div>
-                    <div class="bg-gray-50 rounded-xl p-5 border border-gray-100 pdf-section">
-                        <div class="text-brand-purple font-bold text-2xl mb-1">03</div>
-                        <h3 class="font-bold text-brand-dark text-sm mb-1">Backend Serverless y APIs REST</h3>
-                        <p class="text-gray-600 text-xs">Google Apps Script y Google Sheets como motor relacional.</p>
-                    </div>
-                    <div class="bg-gray-50 rounded-xl p-5 border border-gray-100 pdf-section">
-                        <div class="text-brand-purple font-bold text-2xl mb-1">04</div>
-                        <h3 class="font-bold text-brand-dark text-sm mb-1">Webhooks y Automatización</h3>
-                        <p class="text-gray-600 text-xs">Arquitectura orientada a eventos y notificaciones por WhatsApp.</p>
-                    </div>
-                    <div class="bg-gray-50 rounded-xl p-5 border border-gray-100 pdf-section">
-                        <div class="text-brand-purple font-bold text-2xl mb-1">05</div>
-                        <h3 class="font-bold text-brand-dark text-sm mb-1">Inteligencia Artificial</h3>
-                        <p class="text-gray-600 text-xs">Consumo asíncrono de Gemini API y Prompt Engineering.</p>
-                    </div>
-                    <div class="bg-gray-50 rounded-xl p-5 border border-gray-100 pdf-section">
-                        <div class="text-brand-purple font-bold text-2xl mb-1">06</div>
-                        <h3 class="font-bold text-brand-dark text-sm mb-1">Proyecto Integrador</h3>
-                        <p class="text-gray-600 text-xs">Ensamblado final de la aplicación y publicación con dominio propio.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
 
-        <!-- Instructor -->
-        <section class="py-10 bg-gray-50 border-t border-gray-200 pdf-section">
-            <div class="max-w-4xl mx-auto px-4">
-                <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 flex flex-col md:flex-row gap-6 items-center">
-                    <div class="w-24 h-24 rounded-full border-2 border-brand-purple overflow-hidden bg-brand-navy flex-shrink-0">
-                        <img src="https://placehold.co/400x400/1e3a8a/ffffff?text=Mtro.+C%C3%A9sar" alt="Instructor" class="w-full h-full object-cover">
+                    <!-- Card 2 -->
+                    <div class="group bg-gray-50 rounded-2xl p-8 hover:bg-brand-navy hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 text-center border border-gray-100">
+                        <div class="w-16 h-16 mx-auto bg-white rounded-full flex items-center justify-center text-brand-purple text-2xl shadow-sm mb-6 group-hover:bg-brand-purpleLight group-hover:text-white transition-colors">
+                            <i class="fa-solid fa-laptop-code"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-brand-dark mb-4 group-hover:text-white">Desarrolladores Web</h3>
+                        <p class="text-gray-600 group-hover:text-gray-300 text-sm leading-relaxed">
+                            Programadores que deseen actualizarse en arquitecturas de backend sin servidor, integración de microservicios e Inteligencia Artificial.
+                        </p>
                     </div>
-                    <div>
-                        <div class="text-xs font-bold text-brand-purple tracking-widest uppercase mb-1">Instructor Titular</div>
-                        <h3 class="text-xl font-bold text-brand-dark mb-2">Mtro. César Gabriel Terrazas Zarazúa</h3>
-                        <p class="text-gray-600 text-xs leading-relaxed">
-                            Maestro en Educación por la UEM y Licenciado en Sistemas Computacionales por el CESBA. Con más de 11 años de trayectoria docente y experiencia directiva en TIC en el sector público estatal.
+
+                    <!-- Card 3 -->
+                    <div class="group bg-gray-50 rounded-2xl p-8 hover:bg-brand-navy hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 text-center border border-gray-100">
+                        <div class="w-16 h-16 mx-auto bg-white rounded-full flex items-center justify-center text-brand-purple text-2xl shadow-sm mb-6 group-hover:bg-brand-purpleLight group-hover:text-white transition-colors">
+                            <i class="fa-solid fa-lightbulb"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-brand-dark mb-4 group-hover:text-white">Consultores y Emprendedores</h3>
+                        <p class="text-gray-600 group-hover:text-gray-300 text-sm leading-relaxed">
+                            Tecnológicos que busquen crear productos digitales (SaaS) y herramientas de automatización empresarial minimizando costos operativos.
                         </p>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Footer / Datos -->
-        <footer class="bg-gray-900 text-white py-8 text-center pdf-section">
-            <div class="max-w-4xl mx-auto px-4">
-                <h3 class="text-lg font-bold mb-1">CESBA Campus Querétaro</h3>
-                <p class="text-gray-400 text-xs">Duración: 120 Horas | Modalidad: Presencial / Virtual</p>
-                <p class="text-gray-500 text-[10px] mt-4">&copy; 2026 Centro de Estudios Superiores del Bajío.</p>
+        <!-- Objetivos -->
+        <section id="objetivos" class="py-24 bg-brand-dark relative overflow-hidden">
+            <!-- Background Elements -->
+            <div class="absolute top-0 right-0 -mr-20 -mt-20 w-72 h-72 rounded-full bg-brand-purple opacity-20 blur-3xl"></div>
+            <div class="absolute bottom-0 left-0 -ml-20 -mb-20 w-72 h-72 rounded-full bg-blue-600 opacity-20 blur-3xl"></div>
+
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                <!-- Objetivo General -->
+                <div class="bg-gradient-to-r from-brand-navy to-indigo-900 rounded-3xl p-8 md:p-12 shadow-2xl border border-white/10 mb-20 text-center max-w-4xl mx-auto transform hover:scale-[1.02] transition-transform duration-300">
+                    <div class="inline-block p-3 rounded-full bg-brand-rust/20 text-brand-rust mb-6">
+                        <i class="fa-solid fa-rocket text-3xl"></i>
+                    </div>
+                    <h2 class="text-3xl font-bold text-white mb-6">Objetivo General</h2>
+                    <p class="text-lg md:text-xl text-gray-200 leading-relaxed font-light">
+                        Proporcionar a los participantes las competencias, metodologías y herramientas prácticas necesarias para diseñar, construir y desplegar <strong class="text-white">aplicaciones web Full-Stack Serverless</strong>, integrando Bases de Datos en la nube, APIs de Inteligencia Artificial (Gemini API) y automatización de notificaciones (Webhooks), bajo esquemas avanzados de ciberseguridad y protección de dominios con Cloudflare.
+                    </p>
+                </div>
+
+                <!-- Objetivos Específicos -->
+                <div class="text-center mb-12">
+                    <h3 class="text-2xl md:text-3xl font-bold text-white mb-2">Objetivos Específicos</h3>
+                    <p class="text-brand-purpleLight">Lo que serás capaz de hacer al finalizar</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Obj 1 -->
+                    <div class="bg-white/5 backdrop-blur-sm border border-white/10 p-6 rounded-2xl hover:bg-white/10 transition-colors">
+                        <div class="text-brand-purpleLight text-2xl mb-4"><i class="fa-solid fa-code-branch"></i></div>
+                        <h4 class="text-lg font-bold text-white mb-3">Flujo de Trabajo Moderno</h4>
+                        <p class="text-gray-400 text-sm">Utilizar Git y GitHub como motor de control de versiones y despliegue continuo (CI/CD).</p>
+                    </div>
+                    <!-- Obj 2 -->
+                    <div class="bg-white/5 backdrop-blur-sm border border-white/10 p-6 rounded-2xl hover:bg-white/10 transition-colors">
+                        <div class="text-brand-purpleLight text-2xl mb-4"><i class="fa-solid fa-shield-halved"></i></div>
+                        <h4 class="text-lg font-bold text-white mb-3">Infraestructura y Ciberseguridad</h4>
+                        <p class="text-gray-400 text-sm">Configurar registros DNS, delegación de servidores, certificados SSL/TLS y capas de protección WAF/DDoS con Cloudflare.</p>
+                    </div>
+                    <!-- Obj 3 -->
+                    <div class="bg-white/5 backdrop-blur-sm border border-white/10 p-6 rounded-2xl hover:bg-white/10 transition-colors">
+                        <div class="text-brand-purpleLight text-2xl mb-4"><i class="fa-solid fa-server"></i></div>
+                        <h4 class="text-lg font-bold text-white mb-3">Microservicios Serverless</h4>
+                        <p class="text-gray-400 text-sm">Construir backends ligeros con Google Apps Script y APIs RESTful operando sobre Google Sheets como motor de datos.</p>
+                    </div>
+                    <!-- Obj 4 -->
+                    <div class="bg-white/5 backdrop-blur-sm border border-white/10 p-6 rounded-2xl hover:bg-white/10 transition-colors">
+                        <div class="text-brand-purpleLight text-2xl mb-4"><i class="fa-solid fa-bolt"></i></div>
+                        <h4 class="text-lg font-bold text-white mb-3">Automatización Webhook</h4>
+                        <p class="text-gray-400 text-sm">Conectar flujos de datos con plataformas de mensajería instantánea (CallMeBot / WhatsApp / Telegram).</p>
+                    </div>
+                    <!-- Obj 5 -->
+                    <div class="bg-white/5 backdrop-blur-sm border border-white/10 p-6 rounded-2xl hover:bg-white/10 transition-colors md:col-span-2 lg:col-span-1">
+                        <div class="text-brand-purpleLight text-2xl mb-4"><i class="fa-solid fa-brain"></i></div>
+                        <h4 class="text-lg font-bold text-white mb-3">Integración de IA Generativa</h4>
+                        <p class="text-gray-400 text-sm">Consumir la API de Google Gemini mediante JavaScript para enriquecer la toma de decisiones y UX en tiempo real.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Ejes Formativos y Metodología -->
+        <section class="py-20 bg-gray-50 border-b border-gray-200">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-16">
+                    <h2 class="text-3xl font-bold text-brand-dark mb-4">Ejes Formativos y Metodología</h2>
+                    <p class="text-gray-600">Un enfoque 100% práctico y orientado a la industria real</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+                    <div class="flex gap-4">
+                        <div class="flex-shrink-0 mt-1">
+                            <div class="w-10 h-10 rounded-full bg-brand-purple/10 flex items-center justify-center text-brand-purple">
+                                <i class="fa-solid fa-hammer"></i>
+                            </div>
+                        </div>
+                        <div>
+                            <h4 class="text-xl font-bold text-brand-dark mb-2">Orientado a Proyectos</h4>
+                            <p class="text-gray-600"><strong>Cero teoría aislada.</strong> Cada módulo se evalúa mediante un entregable funcional y desplegado en internet.</p>
+                        </div>
+                    </div>
+
+                    <div class="flex gap-4">
+                        <div class="flex-shrink-0 mt-1">
+                            <div class="w-10 h-10 rounded-full bg-brand-purple/10 flex items-center justify-center text-brand-purple">
+                                <i class="fa-solid fa-users-viewfinder"></i>
+                            </div>
+                        </div>
+                        <div>
+                            <h4 class="text-xl font-bold text-brand-dark mb-2">Networking Estratégico</h4>
+                            <p class="text-gray-600">Construcción de proyectos colaborativos que simulan entornos de trabajo ágiles en la industria de TI.</p>
+                        </div>
+                    </div>
+
+                    <div class="flex gap-4">
+                        <div class="flex-shrink-0 mt-1">
+                            <div class="w-10 h-10 rounded-full bg-brand-purple/10 flex items-center justify-center text-brand-purple">
+                                <i class="fa-solid fa-hand-holding-dollar"></i>
+                            </div>
+                        </div>
+                        <div>
+                            <h4 class="text-xl font-bold text-brand-dark mb-2">Infraestructura Zero-Cost</h4>
+                            <p class="text-gray-600">Aprendizaje sobre tecnologías estándar de la industria accesibles globalmente sin costo de licencias para el estudiante ni para la institución.</p>
+                        </div>
+                    </div>
+
+                    <div class="flex gap-4">
+                        <div class="flex-shrink-0 mt-1">
+                            <div class="w-10 h-10 rounded-full bg-brand-purple/10 flex items-center justify-center text-brand-purple">
+                                <i class="fa-solid fa-briefcase"></i>
+                            </div>
+                        </div>
+                        <div>
+                            <h4 class="text-xl font-bold text-brand-dark mb-2">Portafolio de Graduación</h4>
+                            <p class="text-gray-600">Al finalizar, el alumno contará con un proyecto Full-Stack activo bajo su propio dominio web para exhibir ante reclutadores o clientes.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contenido Curricular (Módulos) -->
+        <section id="modulos" class="py-24 bg-white">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex flex-col items-center text-center mb-16">
+                    <span class="px-4 py-1.5 rounded-full bg-brand-purple/10 text-brand-purple text-sm font-bold tracking-wide uppercase mb-4">Temario</span>
+                    <h2 class="text-3xl md:text-5xl font-extrabold text-brand-dark mb-6">Contenido Curricular</h2>
+                    <p class="text-gray-600 max-w-2xl text-lg">Un viaje de aprendizaje estructurado en 6 módulos intensivos, diseñados para llevarte de los fundamentos al despliegue de software con Inteligencia Artificial.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    
+                    <!-- Modulo 1 -->
+                    <div class="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden group hover:shadow-2xl transition-all duration-300">
+                        <div class="h-2 bg-gradient-to-r from-gray-400 to-gray-600"></div>
+                        <div class="p-8">
+                            <div class="text-gray-400 font-bold text-5xl mb-4 opacity-50 group-hover:text-brand-purple transition-colors">01</div>
+                            <h3 class="text-xl font-bold text-brand-dark mb-3 leading-tight">Control de Versiones y Despliegue Continuo (CI/CD)</h3>
+                            <ul class="text-gray-600 text-sm space-y-2 mb-0">
+                                <li class="flex items-start gap-2"><i class="fa-solid fa-check text-brand-purple mt-1"></i> Fundamentos de Git y arquitectura de repositorios en GitHub.</li>
+                                <li class="flex items-start gap-2"><i class="fa-solid fa-check text-brand-purple mt-1"></i> Automatización de despliegues web con GitHub Pages / Cloudflare Pages.</li>
+                                <li class="flex items-start gap-2"><i class="fa-solid fa-check text-brand-purple mt-1"></i> Manejo de variables de entorno y seguridad en código fuente.</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Modulo 2 -->
+                    <div class="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden group hover:shadow-2xl transition-all duration-300">
+                        <div class="h-2 bg-gradient-to-r from-blue-400 to-blue-600"></div>
+                        <div class="p-8">
+                            <div class="text-blue-400 font-bold text-5xl mb-4 opacity-50 group-hover:text-brand-purple transition-colors">02</div>
+                            <h3 class="text-xl font-bold text-brand-dark mb-3 leading-tight">Infraestructura Web, DNS y Ciberseguridad Cloudflare</h3>
+                            <ul class="text-gray-600 text-sm space-y-2 mb-0">
+                                <li class="flex items-start gap-2"><i class="fa-solid fa-check text-brand-purple mt-1"></i> Anatomía de dominios web (TLDs, registradores, zonificación).</li>
+                                <li class="flex items-start gap-2"><i class="fa-solid fa-check text-brand-purple mt-1"></i> Gestión avanzada de registros DNS y configuración de Cloudflare (SSL/TLS).</li>
+                                <li class="flex items-start gap-2"><i class="fa-solid fa-check text-brand-purple mt-1"></i> Ciberseguridad: Firewall WAF, reglas de acceso y mitigación DDoS.</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Modulo 3 -->
+                    <div class="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden group hover:shadow-2xl transition-all duration-300">
+                        <div class="h-2 bg-gradient-to-r from-green-400 to-green-600"></div>
+                        <div class="p-8">
+                            <div class="text-green-400 font-bold text-5xl mb-4 opacity-50 group-hover:text-brand-purple transition-colors">03</div>
+                            <h3 class="text-xl font-bold text-brand-dark mb-3 leading-tight">Backend Serverless y Arquitectura de APIs REST</h3>
+                            <ul class="text-gray-600 text-sm space-y-2 mb-0">
+                                <li class="flex items-start gap-2"><i class="fa-solid fa-check text-brand-purple mt-1"></i> Creación de endpoints doGet() y doPost() mediante Google Apps Script.</li>
+                                <li class="flex items-start gap-2"><i class="fa-solid fa-check text-brand-purple mt-1"></i> Google Sheets como motor de persistencia de datos relacional.</li>
+                                <li class="flex items-start gap-2"><i class="fa-solid fa-check text-brand-purple mt-1"></i> Control de concurrencia, LockService y sanitización de datos.</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Modulo 4 -->
+                    <div class="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden group hover:shadow-2xl transition-all duration-300">
+                        <div class="h-2 bg-gradient-to-r from-yellow-400 to-yellow-600"></div>
+                        <div class="p-8">
+                            <div class="text-yellow-400 font-bold text-5xl mb-4 opacity-50 group-hover:text-brand-purple transition-colors">04</div>
+                            <h3 class="text-xl font-bold text-brand-dark mb-3 leading-tight">Webhooks, Event-Driven Architecture y Push</h3>
+                            <ul class="text-gray-600 text-sm space-y-2 mb-0">
+                                <li class="flex items-start gap-2"><i class="fa-solid fa-check text-brand-purple mt-1"></i> Arquitectura orientada a eventos.</li>
+                                <li class="flex items-start gap-2"><i class="fa-solid fa-check text-brand-purple mt-1"></i> Integración de Webhooks para procesamiento en segundo plano.</li>
+                                <li class="flex items-start gap-2"><i class="fa-solid fa-check text-brand-purple mt-1"></i> Notificaciones transaccionales a móviles (WhatsApp / Telegram API).</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Modulo 5 -->
+                    <div class="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden group hover:shadow-2xl transition-all duration-300 md:col-span-2 lg:col-span-1">
+                        <div class="h-2 bg-gradient-to-r from-brand-purpleLight to-brand-purple"></div>
+                        <div class="p-8">
+                            <div class="text-brand-purpleLight font-bold text-5xl mb-4 opacity-50 group-hover:text-brand-purple transition-colors">05</div>
+                            <h3 class="text-xl font-bold text-brand-dark mb-3 leading-tight">Integración de Inteligencia Artificial (Gemini API)</h3>
+                            <ul class="text-gray-600 text-sm space-y-2 mb-0">
+                                <li class="flex items-start gap-2"><i class="fa-solid fa-check text-brand-purple mt-1"></i> Consumo de APIs de IA utilizando JavaScript asíncrono.</li>
+                                <li class="flex items-start gap-2"><i class="fa-solid fa-check text-brand-purple mt-1"></i> Prompt Engineering: formateo de respuestas JSON desde la IA.</li>
+                                <li class="flex items-start gap-2"><i class="fa-solid fa-check text-brand-purple mt-1"></i> Automatización de análisis de datos e interacciones inteligentes.</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Modulo 6 -->
+                    <div class="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden group hover:shadow-2xl transition-all duration-300 md:col-span-2 lg:col-span-1">
+                        <div class="h-2 bg-gradient-to-r from-brand-rust to-orange-500"></div>
+                        <div class="p-8">
+                            <div class="text-brand-rust font-bold text-5xl mb-4 opacity-50 group-hover:text-brand-purple transition-colors">06</div>
+                            <h3 class="text-xl font-bold text-brand-dark mb-3 leading-tight">Proyecto Integrador Full-Stack Serverless</h3>
+                            <ul class="text-gray-600 text-sm space-y-2 mb-0">
+                                <li class="flex items-start gap-2"><i class="fa-solid fa-check text-brand-purple mt-1"></i> Ensamblado final de la aplicación web completa.</li>
+                                <li class="flex items-start gap-2"><i class="fa-solid fa-check text-brand-purple mt-1"></i> Pruebas de estrés, optimización de velocidad de carga y UX.</li>
+                                <li class="flex items-start gap-2"><i class="fa-solid fa-check text-brand-purple mt-1"></i> Presentación y publicación oficial bajo dominio propio.</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- Instructor & Requerimientos (Split Layout) -->
+        <section id="instructor" class="py-20 bg-gray-50 border-t border-gray-200">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+                    
+                    <!-- Instructor Profile -->
+                    <div class="lg:col-span-7 bg-white rounded-3xl p-8 md:p-10 shadow-lg border border-gray-100 relative overflow-hidden">
+                        <div class="absolute top-0 right-0 w-32 h-32 bg-brand-purple/5 rounded-bl-full"></div>
+                        
+                        <div class="flex flex-col md:flex-row gap-8 items-start relative z-10">
+                            <div class="flex-shrink-0">
+                                <!-- Placeholder Photo -->
+                                <div class="w-32 h-32 md:w-40 md:h-40 rounded-full border-4 border-white shadow-xl overflow-hidden bg-brand-navy">
+                                    <img src="https://placehold.co/400x400/1e3a8a/ffffff?text=Mtro.+C%C3%A9sar" alt="Mtro. César Gabriel Terrazas Zarazúa" class="w-full h-full object-cover">
+                                </div>
+                            </div>
+                            <div>
+                                <div class="text-sm font-bold text-brand-purple tracking-widest uppercase mb-1">Acerca del Instructor</div>
+                                <h3 class="text-2xl md:text-3xl font-bold text-brand-dark mb-2">Mtro. César Gabriel Terrazas Zarazúa</h3>
+                                
+                                <ul class="mt-6 space-y-4 text-gray-600 text-sm leading-relaxed">
+                                    <li class="flex gap-3">
+                                        <i class="fa-solid fa-award text-brand-rust mt-1"></i>
+                                        <span>Maestro en Educación por la UEM y Licenciado en Sistemas Computacionales por el CESBA.</span>
+                                    </li>
+                                    <li class="flex gap-3">
+                                        <i class="fa-solid fa-certificate text-brand-rust mt-1"></i>
+                                        <span>Diplomados en Administración de Bases de Datos Oracle 11g y Cableado Estructurado por BICSI.</span>
+                                    </li>
+                                    <li class="flex gap-3">
+                                        <i class="fa-solid fa-network-wired text-brand-rust mt-1"></i>
+                                        <span>Titular de Informática y Jefe del Depto. de TIC en el sector público estatal. Amplia trayectoria en gestión de infraestructura, virtualización, y desarrollo institucional.</span>
+                                    </li>
+                                    <li class="flex gap-3">
+                                        <i class="fa-solid fa-chalkboard-user text-brand-rust mt-1"></i>
+                                        <span>Más de 11 años de trayectoria docente en CESBA, coordinando e impartiendo Bases de Datos, Estructura de Datos y Programación Web.</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Requerimientos Técnicos -->
+                    <div class="lg:col-span-5 bg-brand-dark rounded-3xl p-8 md:p-10 shadow-2xl text-white">
+                        <h3 class="text-2xl font-bold mb-6 flex items-center gap-3">
+                            <i class="fa-solid fa-laptop-code text-brand-purpleLight"></i>
+                            Requerimientos
+                        </h3>
+                        
+                        <div class="space-y-6">
+                            <div class="bg-white/5 p-5 rounded-xl border border-white/10">
+                                <h4 class="font-semibold text-brand-purpleLight mb-2 text-sm uppercase">Del Alumno</h4>
+                                <p class="text-gray-300 text-sm">Laptop o PC (Windows 10/11, macOS o Linux) con al menos <strong>8 GB de Memoria RAM</strong>, navegador web actualizado (Chrome/Edge/Firefox) y conexión estable a internet.</p>
+                            </div>
+                            
+                            <div class="bg-white/5 p-5 rounded-xl border border-white/10">
+                                <h4 class="font-semibold text-brand-purpleLight mb-2 text-sm uppercase">Habilidades Previas</h4>
+                                <p class="text-gray-300 text-sm">Conocimientos básicos de lógica de programación y fundamentos de desarrollo web (HTML/JavaScript).</p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- Itinerario y Datos Generales -->
+        <section class="py-20 bg-white">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl font-bold text-brand-dark">Itinerario y Datos Generales</h2>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <!-- Duracion Total -->
+                    <div class="bg-gray-50 rounded-2xl p-6 text-center border border-gray-100 shadow-sm">
+                        <i class="fa-regular fa-clock text-3xl text-brand-purple mb-4"></i>
+                        <h4 class="text-gray-500 text-sm font-semibold uppercase">Duración Total</h4>
+                        <p class="text-xl font-bold text-brand-dark mt-1">120 Horas</p>
+                        <p class="text-xs text-gray-500 mt-1">Prácticas y Guiadas</p>
+                    </div>
+                    
+                    <!-- Meses -->
+                    <div class="bg-gray-50 rounded-2xl p-6 text-center border border-gray-100 shadow-sm">
+                        <i class="fa-regular fa-calendar-days text-3xl text-brand-purple mb-4"></i>
+                        <h4 class="text-gray-500 text-sm font-semibold uppercase">Tiempo Estimado</h4>
+                        <p class="text-xl font-bold text-brand-dark mt-1">4 a 5 Meses</p>
+                        <p class="text-xs text-gray-500 mt-1">30 Sesiones de 4 hrs</p>
+                    </div>
+
+                    <!-- Modalidad -->
+                    <div class="bg-gray-50 rounded-2xl p-6 text-center border border-gray-100 shadow-sm">
+                        <i class="fa-solid fa-video text-3xl text-brand-purple mb-4"></i>
+                        <h4 class="text-gray-500 text-sm font-semibold uppercase">Modalidad</h4>
+                        <p class="text-xl font-bold text-brand-dark mt-1">Presencial / Virtual</p>
+                        <p class="text-xs text-gray-500 mt-1">Síncronas homologadas</p>
+                    </div>
+
+                    <!-- Sede -->
+                    <div class="bg-gray-50 rounded-2xl p-6 text-center border border-gray-100 shadow-sm">
+                        <i class="fa-solid fa-location-dot text-3xl text-brand-purple mb-4"></i>
+                        <h4 class="text-gray-500 text-sm font-semibold uppercase">Sede</h4>
+                        <p class="text-xl font-bold text-brand-dark mt-1">CESBA Querétaro</p>
+                        <p class="text-xs text-gray-500 mt-1">Campus Institucional</p>
+                    </div>
+                </div>
+
+                <!-- CTA Final -->
+                <div id="inscripcion" class="mt-20 bg-brand-dark rounded-3xl p-10 md:p-16 text-center shadow-2xl relative overflow-hidden">
+                    <div class="absolute top-0 right-0 -mr-20 -mt-20 w-64 h-64 rounded-full bg-brand-rust opacity-20 blur-3xl"></div>
+                    <div class="absolute bottom-0 left-0 -ml-20 -mb-20 w-64 h-64 rounded-full bg-brand-purple opacity-20 blur-3xl"></div>
+                    
+                    <h2 class="text-3xl md:text-5xl font-extrabold text-white mb-6 relative z-10">Impulsa tu Carrera Profesional Hoy</h2>
+                    <p class="text-xl text-gray-300 max-w-2xl mx-auto mb-10 relative z-10">Asegura tu lugar en el programa más completo de Arquitectura Serverless e Inteligencia Artificial en el Bajío.</p>
+                    
+                    <button class="relative z-10 inline-flex items-center justify-center px-10 py-5 text-lg font-bold text-white bg-brand-rust hover:bg-brand-rustHover rounded-full transition-all duration-300 shadow-[0_0_20px_rgba(194,65,12,0.5)] hover:shadow-[0_0_40px_rgba(194,65,12,0.7)] transform hover:-translate-y-1">
+                        Solicitar Información y Precios
+                        <i class="fa-solid fa-paper-plane ml-3"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="bg-gray-900 border-t border-gray-800 pt-16 pb-8">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
+                    <div>
+                        <div class="flex items-center gap-3 mb-6">
+                            <div class="w-8 h-8 rounded bg-brand-purple flex items-center justify-center">
+                                <i class="fa-solid fa-cloud text-white text-sm"></i>
+                            </div>
+                            <span class="text-white font-bold text-xl tracking-tight">CESBA</span>
+                        </div>
+                        <p class="text-gray-400 text-sm leading-relaxed">
+                            Centro de Estudios Superiores del Bajío. Formando líderes tecnológicos preparados para los retos de la industria del software global.
+                        </p>
+                    </div>
+                    
+                    <div>
+                        <h4 class="text-white font-bold mb-6">Enlaces Rápidos</h4>
+                        <ul class="space-y-3">
+                            <li><a href="#presentacion" class="text-gray-400 hover:text-brand-purpleLight transition-colors text-sm">Acerca del Diplomado</a></li>
+                            <li><a href="#objetivos" class="text-gray-400 hover:text-brand-purpleLight transition-colors text-sm">Objetivos del Programa</a></li>
+                            <li><a href="#modulos" class="text-gray-400 hover:text-brand-purpleLight transition-colors text-sm">Temario Completo</a></li>
+                            <li><a href="#instructor" class="text-gray-400 hover:text-brand-purpleLight transition-colors text-sm">Perfil del Instructor</a></li>
+                        </ul>
+                    </div>
+
+                    <div>
+                        <h4 class="text-white font-bold mb-6">Contacto Institucional</h4>
+                        <ul class="space-y-3">
+                            <li class="flex items-start gap-3 text-sm text-gray-400">
+                                <i class="fa-solid fa-location-dot mt-1 text-brand-purpleLight"></i>
+                                <span>Campus Querétaro</span>
+                            </li>
+                            <li class="flex items-center gap-3 text-sm text-gray-400">
+                                <i class="fa-solid fa-envelope text-brand-purpleLight"></i>
+                                <a href="#" class="hover:text-white transition-colors">contacto@cesba.edu.mx</a>
+                            </li>
+                        </ul>
+                        <div class="flex gap-4 mt-6">
+                            <a href="#" class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-gray-400 hover:bg-brand-purple hover:text-white transition-all"><i class="fa-brands fa-facebook-f"></i></a>
+                            <a href="#" class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-gray-400 hover:bg-brand-purple hover:text-white transition-all"><i class="fa-brands fa-linkedin-in"></i></a>
+                            <a href="#" class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-gray-400 hover:bg-brand-purple hover:text-white transition-all"><i class="fa-brands fa-instagram"></i></a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+                    <p class="text-gray-500 text-sm">
+                        &copy; 2026 Centro de Estudios Superiores del Bajío. Todos los derechos reservados.
+                    </p>
+                    <div class="flex gap-6">
+                        <a href="#" class="text-gray-500 hover:text-white text-sm transition-colors">Aviso de Privacidad</a>
+                        <a href="#" class="text-gray-500 hover:text-white text-sm transition-colors">Términos y Condiciones</a>
+                    </div>
+                </div>
             </div>
         </footer>
 
-    </div><!-- Fin del contenedor PDF -->
+    </div><!-- Fin del contenedor para PDF -->
 
-    <!-- Script optimizado para evitar cortes -->
+    <!-- Script para generar el PDF respetando tu diseño -->
     <script>
         function descargarPDF() {
             const btn = document.getElementById('btn-descargar');
@@ -207,7 +642,7 @@
             const elemento = document.getElementById('propuesta-pdf');
 
             const opciones = {
-                margin:       [5, 5, 5, 5], 
+                margin:       [5, 5, 5, 5],
                 filename:     'Propuesta_Diplomado_CESBA_CesarTerrazas.pdf',
                 image:        { type: 'jpeg', quality: 0.98 },
                 html2canvas:  { scale: 2, useCORS: true, letterRendering: true, scrollY: 0 },
